@@ -12,7 +12,7 @@ fi
 
 # Download linux artifacts
 mkdir -p prebuilt/linux
-wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/jobs/artifacts/rk3588/download?job=build%20arm64%20debian%20package"
+wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/jobs/artifacts/rockchip-release/download?job=build%20arm64%20debian%20package"
 unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
 
 # Download u-boot artifacts for sige5-rk3576
