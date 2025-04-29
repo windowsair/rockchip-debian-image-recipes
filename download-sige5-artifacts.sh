@@ -17,7 +17,7 @@ unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
 
 # Download u-boot artifacts for sige5-rk3576
 mkdir -p prebuilt/u-boot-sige5-rk3576/
-wget -O prebuilt/u-boot-sige5-rk3576/u-boot.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/u-boot/-/jobs/artifacts/rk3576-sige5-kwiboo-mainline/download?job=build%20armsom-sige5"
+wget -O prebuilt/u-boot-sige5-rk3576/u-boot.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/u-boot/-/jobs/artifacts/rk3576-images/download?job=build%20armsom-sige5"
 unzip -j prebuilt/u-boot-sige5-rk3576/u-boot.zip -d prebuilt/u-boot-sige5-rk3576/
 
 # List contents
