@@ -59,6 +59,10 @@ actions:
     description: Enable DHCP IP on Ethernet connections
     source: overlays/network-wired
 
+  - action: overlay
+    description: Re-enable mDNS in systemd-resolved
+    source: overlays/enable-mdns
+
   - action: run
     description: Enable systemd-networkd
     chroot: true
