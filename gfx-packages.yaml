@@ -11,6 +11,7 @@ actions:
      - libgl1-mesa-dri
      - libegl-mesa0
      - libglapi-mesa
+     - mesa-teflon-delegate
 
   - action: apt
     description: Install media packages
