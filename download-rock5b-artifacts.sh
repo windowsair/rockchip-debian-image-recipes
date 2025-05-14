@@ -14,6 +14,8 @@ fi
 mkdir -p prebuilt/linux
 wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/jobs/artifacts/rockchip-release/download?job=build%20arm64%20debian%20package"
 unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
+wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/jobs/artifacts/rockchip-devel/download?job=build%20arm64%20debian%20package"
+unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
 
 # Download u-boot artifacts for rock5b-rk3588
 mkdir -p prebuilt/u-boot-rock5b-rk3588
