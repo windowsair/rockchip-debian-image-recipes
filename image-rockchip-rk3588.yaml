@@ -64,7 +64,7 @@ actions:
   - action: run
     description: Install kernel
     chroot: true
-    command: apt-get install ./opt/linux/*.deb
+    command: apt-get install ./opt/linux/linux-image-*-g????????????_*_arm64.deb
 
   - action: run
     description: Check extlinux contents

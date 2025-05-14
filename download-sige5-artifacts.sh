@@ -16,11 +16,13 @@ wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enableme
 unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
 wget -O prebuilt/linux/linux.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/linux/-/jobs/artifacts/rockchip-devel/download?job=build%20arm64%20debian%20package"
 unzip -j prebuilt/linux/linux.zip -d prebuilt/linux/
+rm prebuilt/linux/linux.zip
 
 # Download u-boot artifacts for sige5-rk3576
 mkdir -p prebuilt/u-boot-sige5-rk3576/
 wget -O prebuilt/u-boot-sige5-rk3576/u-boot.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/u-boot/-/jobs/artifacts/rk3576-images/download?job=build%20armsom-sige5"
 unzip -j prebuilt/u-boot-sige5-rk3576/u-boot.zip -d prebuilt/u-boot-sige5-rk3576/
+rm prebuilt/u-boot-sige5-rk3576/u-boot.zip
 
 # List contents
 find prebuilt/
