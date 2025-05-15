@@ -20,7 +20,7 @@ rm prebuilt/linux/linux.zip
 
 # Download u-boot artifacts for rock5b-rk3588
 mkdir -p prebuilt/u-boot-rock5b-rk3588
-wget -O prebuilt/u-boot-rock5b-rk3588/u-boot.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/u-boot/-/jobs/artifacts/rk3588/download?job=build%20rock-5b%20with%20upstream%20TF-A"
+wget -O prebuilt/u-boot-rock5b-rk3588/u-boot.zip "https://gitlab.collabora.com/hardware-enablement/rockchip-3588/u-boot/-/jobs/artifacts/rockchip/download?job=build%20rock5b-rk3588:%20[upstream]"
 unzip -j prebuilt/u-boot-rock5b-rk3588/u-boot.zip -d prebuilt/u-boot-rock5b-rk3588/
 rm prebuilt/u-boot-rock5b-rk3588/u-boot.zip
 
