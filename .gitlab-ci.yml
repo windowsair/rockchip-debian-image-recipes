@@ -69,3 +69,19 @@ sige5 image:
             -t suite:$SUITE
             -t platform:sige5-rk3576
             image-rockchip-rk3576.yaml
+
+rock4d image:
+  extends: .debos
+  stage: stage2
+  needs:
+    - "prepare debian rootfs"
+  script:
+    # download u-boot and kernel from GitLab artifacts
+    - ./download-rock4d-artifacts.sh
+
+    # rock4d-rk3576 image
+    - debos --artifactdir=out
+            -t architecture:$ARCHITECTURE
+            -t suite:$SUITE
+            -t platform:rock4d-rk3576
+            image-rockchip-rk3576.yaml
