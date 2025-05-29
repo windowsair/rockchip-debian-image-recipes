@@ -58,9 +58,10 @@ $ rockusb write-bmap image-rockchip-rock5b-rk3588.img.gz
 $ rockusb reset
 ```
 
-The process for the Sige5 board is similar, but substituting the loader with the
-`rk3576_spl_loader_*` binary and the image with the
-`image-rockchip-sige5-rk3576.img.gz` image.
+The process for the Sige5 and ROCK 4D boards is similar, but substituting the
+loader with the `rk3576_spl_loader_*` binary and the image with the
+`image-rockchip-sige5-rk3576.img.gz` or `image-rockchip-rock4d-rk3576.img.gz`
+files respectively.
 
 ### Install to SD card
 Copy the image to an SD card using `bmaptool`, assuming `/dev/sdX` as the
@@ -70,6 +71,8 @@ target block device:
 $ bmaptool copy image-rockchip-rock5b-rk3588.img.gz /dev/sdX
 # For Sige5
 $ bmaptool copy image-rockchip-sige5-rk3576.img.gz /dev/sdX
+# For ROCK 4D
+$ bmaptool copy image-rockchip-rock4d-rk3576.img.gz /dev/sdX
 ```
 
 ## Using the images
@@ -99,14 +102,17 @@ The first stage is to build a generic (but architecture-specific) ospack, then
 assemble the ospack into multiple hardware-specific images.
 
 Linux kernel and u-boot binaries for your specific platform needs to be copied
-into the `prebuilt` directory. See `download-rockchip-artifacts.sh` for the directory
-layout.
+into the `prebuilt` directory. See the corresponding `download-*-artifacts.sh`
+file for the directory layout.
 
 
 ```bash
-$ ./download-rockchip-artifacts.sh
 $ mkdir out
 $ debos --artifactdir=out -t architecture:arm64 ospack-debian.yaml
+$ ./download-rock5b-artifacts.sh
 $ debos --artifactdir=out -t architecture:arm64 -t platform:rock5b-rk3588 image-rockchip-rk3588.yaml
-$ debos --artifactdir=out -t architecture:arm64 -t platform:sige5-rk3576 image-rockchip-rk3576.yaml
+$ ./download-sige5-artifacts.sh
+$ debos --artifactdir=out -t architecture:arm64 -t platform:sige5-rk3576 image-rockchip-sige5-rk3576.yaml
+$ ./download-rock4d-artifacts.sh
+$ debos --artifactdir=out -t architecture:arm64 -t platform:rock4d-rk3576 image-rockchip-rock4d-rk3576.yaml
 ```
