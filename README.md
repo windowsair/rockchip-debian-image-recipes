@@ -8,7 +8,7 @@ by the images.
 
 These images can be flashed to an SD card or eMMC.
 
-## Using the images
+## Prerequisites
 
 ### Prebuilt images
 See the [CI/CD pipelines](https://gitlab.collabora.com/hardware-enablement/rockchip-3588/debian-image-recipes/-/pipelines)
@@ -24,56 +24,58 @@ $ cargo install rockusb --example rockusb --features=libusb
 By default, the resulting rockusb binary will be placed in `~/.cargo/bin`. It's
 a good idea to add this directory to your `$PATH` if you haven't already.
 
-### Remove preinstalled bootloader from SPI Flash
-The ROCK 5 Model B comes with an old vendor bootloader installed on the
-SPI Flash which can cause incompatibilities with these mainline-based
-images. To remove the bootloader from the SPI flash, remove the eMMC,
-press the [maskrom button](https://gitlab.collabora.com/hardware-enablement/rockchip-3588/notes-for-rockchip-3588/-/blob/main/rock5b-rk3588.md#maskrom),
-plug the board into USB port and run:
+### rkdeveloptool
+The official vendor tool alternative to RockUSB is [rkdeveloptool](https://github.com/rockchip-linux/rkdeveloptool/),
+which includes some features RockUSB lacks, but lacks others. It's recommended
+to build it from source, as the `./tools/rkdeveloptool` included in rkbin isn't
+always up to date or fully functional.
+
+### udev rules
+For both RockUSB and rkdeveloptool, some udev rules are required if rockusb or
+rkdeveloptool is to be run as a regular user, and not root.
+
+The following can be saved to e.g. `/etc/udev/rules.d/99-rockusb.rules` in order
+to let regular users access Rockchip devices connected over USB:
 
 ```
-$ rkdeveloptool db rk3588_spl_loader_v1.08.111.bin
-$ rkdeveloptool ef
+SUBSYSTEM!="usb", GOTO="end_rules"
+
+# RK3036
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="301a", MODE="0666", GROUP="users"
+# RK3128
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="310c", MODE="0666", GROUP="users"
+# RK3229
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="320b", MODE="0666", GROUP="users"
+# RK3288
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="320a", MODE="0666", GROUP="users"
+# RK3328
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="320c", MODE="0666", GROUP="users"
+# RK3368
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="330a", MODE="0666", GROUP="users"
+# RK3399
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="330c", MODE="0666", GROUP="users"
+# RK3566
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="350a", MODE="0666", GROUP="users"
+# RK3576
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="350e", MODE="0666", GROUP="users"
+# RK3588
+ATTRS{idVendor}=="2207", ATTRS{idProduct}=="350b", MODE="0666", GROUP="users"
+
+LABEL="end_rules"
 ```
 
-### Install to eMMC
+Afterwards, `udevadm control --reload` should be run as root to reload the
+rules, and if the device has already been plugged in, either replugging it or
+running `udevadm trigger` will ensure the new rules are in effect.
 
-Press & hold the board's [maskrom button](https://gitlab.collabora.com/hardware-enablement/rockchip-3588/notes-for-rockchip-3588/-/blob/main/rock5b-rk3588.md#maskrom) before applying power. Once the board is in maskrom mode, release the button.
+## Board-specific installation instructions
 
-```
-$ rockusb list
-Available rockchip devices
-* Bus 006 Device 014: ID 2207:350b
+Please refer to the following documents for instructions on how to install
+these images onto the supported boards:
 
-$ rockusb download-boot rk3588_spl_loader_v1.08.111.bin
-0 Name: UsbHead
-Done!... waiting 1ms
-1 Name: rk3588_ddr_lp4_2112M
-Done!... waiting 1ms
-0 Name: rk3588_usbplug_v1
-Done!... waiting 0ms
-
-$ rockusb write-bmap image-rockchip-rock5b-rk3588.img.gz
-
-$ rockusb reset
-```
-
-The process for the Sige5 and ROCK 4D boards is similar, but substituting the
-loader with the `rk3576_spl_loader_*` binary and the image with the
-`image-rockchip-sige5-rk3576.img.gz` or `image-rockchip-rock4d-rk3576.img.gz`
-files respectively.
-
-### Install to SD card
-Copy the image to an SD card using `bmaptool`, assuming `/dev/sdX` as the
-target block device:
-```
-# For ROCK 5B
-$ bmaptool copy image-rockchip-rock5b-rk3588.img.gz /dev/sdX
-# For Sige5
-$ bmaptool copy image-rockchip-sige5-rk3576.img.gz /dev/sdX
-# For ROCK 4D
-$ bmaptool copy image-rockchip-rock4d-rk3576.img.gz /dev/sdX
-```
+* [ROCK 5B/5B+ Instructions](./README-rock5b.md)
+* [ROCK 4D Instructions](./README-rock4d.md)
+* [Sige5 Instructions](./README-sige5.md)
 
 ## Using the images
 
