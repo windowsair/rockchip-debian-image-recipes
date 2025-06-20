@@ -1,0 +1,54 @@
+{{ $architecture := or .architecture "arm64" }}
+{{ $test := or .test "kselftest" }}
+
+architecture: {{ $architecture }}
+
+actions:
+  {{ if eq $test "kselftest" }}
+  - action: apt
+    description: Install dependencies for LAVA kselftest runner
+    packages:
+      - sed
+      - perl
+      - wget
+      - xz-utils
+      - iproute2
+      - python3-tap
+  {{ else if eq $test "wifi-basic" }}
+  - action: apt
+    description: Install dependencies for wifi-basic test
+    packages:
+      - iw
+      - rfkill
+      - iproute2
+  {{ else if eq $test "glmark2" }}
+  - action: apt
+    description: Install dependencies for glmark2 test
+    packages:
+      - glmark2-wayland
+      - yq
+  {{ else if eq $test "fluster" }}
+  - action: apt
+    description: Install dependencies for fluster test
+    packages:
+      - junitparser
+      - fluster
+      - gstreamer1.0-tools
+      - gstreamer1.0-plugins-bad
+
+  - action: run
+    description: Download fluster test suites
+    chroot: true
+    command: |
+      fluster d VP8-TEST-VECTORS
+      fluster d VP9-TEST-VECTORS
+      fluster d JVT-AVC_V1
+      fluster d JCT-VC-HEVC_V1
+      fluster d AV1-TEST-VECTORS
+  {{ else if eq $test "avvideocompare" }}
+  - action: apt
+    description: Install dependencies for avvideocompare test
+    packages:
+      - gstreamer1.0-libav
+      - bc
+  {{ end }}

@@ -23,6 +23,11 @@ actions:
     command: "rm -rf /usr/share/{doc,info,locale,man}/*"
 
   - action: apt
+    description: Allow HTTPS
+    packages:
+      - ca-certificates
+
+  - action: apt
     packages:
       - adduser
       - sudo
@@ -108,6 +113,31 @@ actions:
       # IIO device testing
       - libiio-utils
 
+  - action: recipe
+    recipe: lava-test-dependencies-install.yaml
+    variables:
+      test: kselftest
+
+  - action: recipe
+    recipe: lava-test-dependencies-install.yaml
+    variables:
+      test: wifi-basic
+
+  - action: recipe
+    recipe: lava-test-dependencies-install.yaml
+    variables:
+      test: glmark2
+
+  - action: recipe
+    recipe: lava-test-dependencies-install.yaml
+    variables:
+      test: fluster
+
+  - action: recipe
+    recipe: lava-test-dependencies-install.yaml
+    variables:
+      test: avvideocompare
+
   - action: run
     description: Create fake kernel config to please mkinitramfs
     chroot: true
@@ -133,7 +163,7 @@ actions:
 
   - action: image-partition
     imagename: {{ $basename -}}.img
-    imagesize: 1G
+    imagesize: 2G
     partitiontype: gpt
     mountpoints:
       - mountpoint: /
