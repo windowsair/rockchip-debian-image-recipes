@@ -38,6 +38,22 @@ prepare debian rootfs:
             -t suite:$SUITE
             ospack-debian.yaml
 
+rk3588 evb image:
+  extends: .debos
+  stage: stage2
+  needs:
+    - "prepare debian rootfs"
+  script:
+    # download u-boot and kernel from GitLab artifacts
+    - ./download-rk3588-evb-artifacts.sh
+
+    # evb-rk3588 image
+    - debos --artifactdir=out
+            -t architecture:$ARCHITECTURE
+            -t suite:$SUITE
+            -t platform:evb-rk3588
+            image-rockchip-rk3588.yaml
+
 rock5b image:
   extends: .debos
   stage: stage2
@@ -53,6 +69,22 @@ rock5b image:
             -t suite:$SUITE
             -t platform:rock5b-rk3588
             image-rockchip-rk3588.yaml
+
+rk3576 evb image:
+  extends: .debos
+  stage: stage2
+  needs:
+    - "prepare debian rootfs"
+  script:
+    # download u-boot and kernel from GitLab artifacts
+    - ./download-rk3576-evb-artifacts.sh
+
+    # evb-rk3576 image
+    - debos --artifactdir=out
+            -t architecture:$ARCHITECTURE
+            -t suite:$SUITE
+            -t platform:evb-rk3576
+            image-rockchip-rk3576.yaml
 
 sige5 image:
   extends: .debos
