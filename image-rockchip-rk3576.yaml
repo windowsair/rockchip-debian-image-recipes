@@ -80,6 +80,12 @@ actions:
     command: cp $RECIPEDIR/prebuilt/u-boot-{{ $platform }}/rk3576_spl_loader_*.bin $ARTIFACTDIR/
 
   - action: run
+    description: Copy SPI bootloader binary to output directory for platforms supporting it
+    chroot: false
+    postprocess: true
+    command: cp $RECIPEDIR/prebuilt/u-boot-{{ $platform }}/u-boot-rockchip-spi.bin $ARTIFACTDIR/ 2>/dev/null || echo "No SPI U-Boot image"
+
+  - action: run
     description: Create block map for {{ $image }}.img
     chroot: false
     postprocess: true
