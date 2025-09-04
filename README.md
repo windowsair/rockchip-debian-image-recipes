@@ -76,6 +76,7 @@ these images onto the supported boards:
 * [ROCK 5B/5B+ Instructions](./README-rock5b.md)
 * [ROCK 4D Instructions](./README-rock4d.md)
 * [Sige5 Instructions](./README-sige5.md)
+* [RK3576 EVB Instructions](./README-rk3576-evb.md)
 
 ## Using the images
 
