@@ -54,6 +54,22 @@ rk3588 evb image:
             -t platform:evb-rk3588
             image-rockchip-rk3588.yaml
 
+rock5a image:
+  extends: .debos
+  stage: stage2
+  needs:
+    - "prepare debian rootfs"
+  script:
+    # download u-boot and kernel from GitLab artifacts
+    - ./download-rock5a-artifacts.sh
+
+    # rock5a-rk3588s image
+    - debos --artifactdir=out
+            -t architecture:$ARCHITECTURE
+            -t suite:$SUITE
+            -t platform:rock5a-rk3588s
+            image-rockchip-rk3588.yaml
+
 rock5b image:
   extends: .debos
   stage: stage2
