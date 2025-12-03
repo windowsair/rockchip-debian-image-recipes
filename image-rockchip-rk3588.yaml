@@ -5,6 +5,7 @@
 {{ $platform := or .platform "unknown" }}
 {{ $cmdline := or .cmdline "rootwait" }}
 {{ $image := or .image (printf "image-rockchip-%s" $platform) }}
+{{ $variant := or .variant "default" }}
 
 architecture: {{ $architecture }}
 
@@ -44,6 +45,16 @@ actions:
   - action: run
     description: Set hostname to debian-rockchip-{{ $platform }}
     command: echo "debian-rockchip-{{ $platform }}" > ${ROOTDIR}/etc/hostname
+
+{{- if eq $variant "dualcam4k" }}
+  - action: run
+    description: Activate device tree overlays for {{ $variant }} variant
+    command: echo "U_BOOT_FDT_OVERLAYS=\"rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam0.dtbo rockchip/rk3588-rock-5b-plus-radxa-cam4k-cam1.dtbo\"" >> ${ROOTDIR}/etc/default/u-boot
+{{- end }}
+
+  - action: run
+    description: Set device tree overlay directory
+    command: echo "U_BOOT_FDT_OVERLAYS_DIR=\"/usr/lib/linux-image-\"" >> ${ROOTDIR}/etc/default/u-boot
 
   - action: overlay
     description: "Configure systemd-repart to grow / at first boot"
