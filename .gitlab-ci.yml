@@ -45,7 +45,7 @@ rk3588 evb image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-rk3588-evb-artifacts.sh
+    - ./download-artifacts.sh evb-rk3588
 
     # evb-rk3588 image
     - debos --artifactdir=out
@@ -61,7 +61,7 @@ rock5a image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-rock5a-artifacts.sh
+    - ./download-artifacts.sh rock5a-rk3588s
 
     # rock5a-rk3588s image
     - debos --artifactdir=out
@@ -77,7 +77,7 @@ rock5b image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-rock5b-artifacts.sh
+    - ./download-artifacts.sh rock5b-rk3588
 
     # rock5b-rk3588 image
     - debos --artifactdir=out
@@ -93,7 +93,7 @@ rk3576 evb image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-rk3576-evb-artifacts.sh
+    - ./download-artifacts.sh evb-rk3576
 
     # evb-rk3576 image
     - debos --artifactdir=out
@@ -109,7 +109,7 @@ sige5 image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-sige5-artifacts.sh
+    - ./download-artifacts.sh sige5-rk3576
 
     # sige5-rk3576 image
     - debos --artifactdir=out
@@ -125,7 +125,7 @@ rock4d image:
     - "prepare debian rootfs"
   script:
     # download u-boot and kernel from GitLab artifacts
-    - ./download-rock4d-artifacts.sh
+    - ./download-artifacts.sh rock4d-rk3576
 
     # rock4d-rk3576 image
     - debos --artifactdir=out
