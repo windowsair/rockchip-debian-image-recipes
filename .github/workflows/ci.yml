@@ -1,0 +1,81 @@
+name: ci/build
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  ci-image:
+    runs-on:
+      - ubuntu-22.04-arm
+    container:
+      image: ghcr.io/go-debos/debos:main
+    env:
+      ARCHITECTURE: arm64
+      SUITE: trixie
+    steps:
+    - uses: actions/checkout@v4.1.0
+    - run: mkdir -p out
+    - run: debos --artifactdir=out -t architecture:$ARCHITECTURE -t suite:$SUITE ci-image.yaml
+    - uses: actions/upload-artifact@v4.1.0
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        retention-days: 7
+        path: out
+  prepare-debian-rootfs:
+    runs-on:
+      - ubuntu-22.04-arm
+    container:
+      image: ghcr.io/go-debos/debos:main
+    env:
+      ARCHITECTURE: arm64
+      SUITE: trixie
+    steps:
+    - uses: actions/checkout@v4.1.0
+    - run: mkdir -p out
+    - run: debos --artifactdir=out -t architecture:$ARCHITECTURE -t suite:$SUITE ospack-debian.yaml
+    - uses: actions/upload-artifact@v4.1.0
+      if: success()
+      with:
+        name: "${{ github.job }}"
+        retention-days: 7
+        path: out
+  build-board-image:
+    strategy:
+      matrix:
+        include:
+          - name: rk3588-evb-image
+            platform: evb-rk3588
+            config: image-rockchip-rk3588.yaml
+          - name: rk3576-evb-image
+            platform: evb-rk3576
+            config: image-rockchip-rk3576.yaml
+    needs: [ci-image, prepare-debian-rootfs]
+    name: ${{ matrix.name }}
+    runs-on:
+      - ubuntu-22.04-arm
+    container:
+      image: ghcr.io/go-debos/debos:main
+    env:
+      ARCHITECTURE: arm64
+      SUITE: trixie
+    steps:
+    - uses: actions/checkout@v4.1.0
+    - uses: actions/download-artifact@v5
+      with:
+        name: prepare-debian-rootfs
+        path: out
+    - name: Prepare
+      run: |
+        ./install-gh.sh
+        mkdir -p out
+    - run: "./download-artifacts.sh ${{ matrix.platform }}"
+      env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - run: debos --artifactdir=out -t architecture:$ARCHITECTURE -t suite:$SUITE -t platform:${{ matrix.platform }} ${{ matrix.config }}
+    - uses: actions/upload-artifact@v4.1.0
+      if: success()
+      with:
+        name: "${{ matrix.name }}"
+        path: |
+          out
+          !out/ospack-debian*
