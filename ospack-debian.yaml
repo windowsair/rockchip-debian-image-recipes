@@ -152,6 +152,13 @@ actions:
     command: systemctl enable regen-openssh-keys.service
 
   - action: run
+    description: Auto load rockchip module
+    chroot: true
+    command: |
+      echo rk_vcodec >> /etc/modules-load.d/rockchip-drv.conf
+      echo rocket >> /etc/modules-load.d/rockchip-drv.conf
+
+  - action: run
     description: Clean rootfs for safe first boot
     chroot: true
     script: scripts/clean-rootfs.sh
