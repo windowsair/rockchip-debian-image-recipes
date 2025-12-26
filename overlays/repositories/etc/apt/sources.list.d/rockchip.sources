@@ -1,0 +1,6 @@
+Types: deb
+URIs: https://rockchip-overlay-repo.pages.dev/
+Suites: trixie
+Components: main
+Signed-By: /etc/apt/trusted.gpg.d/rockchip-archive-keyring.gpg
+
